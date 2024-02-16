@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mongo-deploy
+  name: mongo-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongo-deploy
+    spec:
+      containers:
+      - image: mongo:5.0.24
+        name: mongo
+        ports:
+        - containerPort: 27017
+        env:
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: MONGO_INITDB_ROOT_PASSWORD
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: mongo-config
+                key: MONGO_INITDB_ROOT_USERNAME
+        resources: {}
+status: {}

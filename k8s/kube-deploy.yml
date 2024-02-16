@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: kube-deploy
+  name: kube-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kube-deploy
+    spec:
+      containers:
+      - image: kube-demo
+        name: kube-demo
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        env:
+          - name: MONGO_DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: kube-config
+                key: MONGO_DB_HOST
+        resources: {}
+
+
+status: {}
